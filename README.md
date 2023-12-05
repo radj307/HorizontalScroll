@@ -14,9 +14,8 @@ No `xmlns` declaration is required to use **HorizontalScroll** in XAML.
 
 > **Table of Contents**
 > 
-> 1. [Behaviors](#behaviors)
->    1. [`HorizontalScrollBehavior`](#behaviors)
->    2. [Application-Wide Support](#enabling-application-wide-support)
+> 1. [Using `HorizontalScrollBehavior`](#behaviors)
+>    1. [Application-Wide Support](#enabling-application-wide-support)
 > 3. [Events](#events)
 
 ## Behaviors
