@@ -9,7 +9,7 @@ namespace HorizontalScroll
     /// </summary>
     public static class HorizontalScroll
     {
-        #region PreviewMouseWheelHorizontalEvent
+        #region PreviewMouseWheelTiltEvent
         /// <summary>
         /// Occurs when the user tilts the mouse wheel while the mouse pointer is over an element.
         /// </summary>
@@ -36,9 +36,9 @@ namespace HorizontalScroll
         /// </summary>
         public static void RemovePreviewMouseWheelTiltHandler(DependencyObject dependencyObject, MouseWheelEventHandler handler)
             => ((UIElement)dependencyObject).RemoveHandler(PreviewMouseWheelTiltEvent, handler);
-        #endregion PreviewMouseWheelHorizontalEvent
+        #endregion PreviewMouseWheelTiltEvent
 
-        #region MouseWheelHorizontalEvent
+        #region MouseWheelTiltEvent
         /// <summary>
         /// Occurs when the user tilts the mouse wheel while the mouse pointer is over an element.
         /// </summary>
@@ -66,6 +66,6 @@ namespace HorizontalScroll
         /// </summary>
         public static void RemoveMouseWheelTiltHandler(DependencyObject d, MouseWheelEventHandler handler)
             => ((UIElement)d).RemoveHandler(MouseWheelTiltEvent, handler);
-        #endregion MouseWheelHorizontalEvent
+        #endregion MouseWheelTiltEvent
     }
 }

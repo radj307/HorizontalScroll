@@ -33,7 +33,7 @@ namespace HorizontalScroll
             switch (msg)
             {
             case WM_MOUSEHWHEEL:
-                HandleMouseWheelHorizontal(GetHorizontalDelta(wParam));
+                HandleMouseWheelHorizontal(Environment.TickCount, GetHorizontalDelta(wParam));
                 break;
             }
             return IntPtr.Zero;
@@ -48,7 +48,7 @@ namespace HorizontalScroll
         #endregion (Private) GetHorizontalDelta
 
         #region (Private) HandleMouseWheelHorizontal
-        private static void HandleMouseWheelHorizontal(int delta)
+        private static void HandleMouseWheelHorizontal(int tickCount, int delta)
         {
             if (Mouse.DirectlyOver is not IInputElement element)
                 return; //< the mouse isn't over an element
@@ -65,7 +65,7 @@ namespace HorizontalScroll
                 element,
                 HorizontalScroll.PreviewMouseWheelTiltEvent,
                 HorizontalScroll.MouseWheelTiltEvent,
-                new MouseWheelEventArgs(Mouse.PrimaryDevice, Environment.TickCount, delta));
+                new MouseWheelEventArgs(Mouse.PrimaryDevice, tickCount, delta));
         }
         #endregion (Private) HandleMouseWheelHorizontal
 
