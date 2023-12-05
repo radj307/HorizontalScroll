@@ -12,7 +12,6 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <ImplicitUsings>disable</ImplicitUsings>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <Description> Adds horizontal mouse wheel support to WPF</Description>
     <RepositoryUrl>https://github.com/radj307/HorizontalScroll</RepositoryUrl>
     <PackageTags>horizontal;mouse;scroll;wheel;tilt;hook;wpf;support;ScrollViewer</PackageTags>
   </PropertyGroup>
