@@ -4,8 +4,8 @@
     <Authors>radj307</Authors>
     <!--  Prevent commit hash in version number with .NET 8+ (see https://github.com/dotnet/docs/issues/38404 & https://learn.microsoft.com/en-us/dotnet/core/compatibility/sdk/8.0/source-link)  -->
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-    <Version>0.0.0</Version>
-    <FileVersion>0.0.0</FileVersion>
+    <Version>0.1.0</Version>
+    <FileVersion>0.1.0</FileVersion>
     <Copyright>Copyright © 2023 by $(Authors)</Copyright>
   </PropertyGroup>
 </Project>
