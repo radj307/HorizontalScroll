@@ -4,9 +4,6 @@ using System.Windows.Media.Media3D;
 
 namespace HorizontalScroll
 {
-    /// <summary>
-    /// Additional helper methods for navigating the visual tree.
-    /// </summary>
     static class VisualTreeHelpers
     {
         /// <summary>
@@ -24,11 +21,9 @@ namespace HorizontalScroll
             }
             return null;
         }
-        private static DependencyObject GetParent(DependencyObject d)
-        {
-            if (d is Visual || d is Visual3D)
-                return VisualTreeHelper.GetParent(d);
-            else return LogicalTreeHelper.GetParent(d);
-        }
+        public static DependencyObject GetParent(DependencyObject d)
+            => d is Visual || d is Visual3D
+            ? VisualTreeHelper.GetParent(d)     //< is visual element
+            : LogicalTreeHelper.GetParent(d);   //< is logical element
     }
 }

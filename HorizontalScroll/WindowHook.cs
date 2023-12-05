@@ -12,9 +12,9 @@ namespace HorizontalScroll
     /// Provides a window message hook that adds support for horizontal scrolling with tiltable mouse wheels.
     /// </summary>
     /// <remarks>
-    /// Adds an attached event to all UIElements that triggers when the user tilts the mouse scroll wheel.
+    /// To retrieve the <see cref="HwndSourceHook"/>, use the <see cref="Hook"/> property.
     /// </remarks>
-    public static class HorizontalScrollSupportHook
+    public static class HorizontalScrollWindowHook
     {
         #region Properties
         private static readonly HashSet<IntPtr> _hookedHwnds = new();
@@ -50,32 +50,36 @@ namespace HorizontalScroll
         #region (Private) HandleMouseWheelHorizontal
         private static void HandleMouseWheelHorizontal(int delta)
         {
-            if (delta == 0) return;
-
-            var element = Mouse.DirectlyOver;
-            if (element == null) return;
+            if (Mouse.DirectlyOver is not IInputElement element)
+                return; //< the mouse isn't over an element
 
             if (element is not UIElement)
-            {
+            { // try to resolve a UIElement from ancestors
                 if (VisualTreeHelpers.FindAncestorWithType<UIElement>((DependencyObject)element) is not UIElement ancestorElement)
-                    return;
+                    return; //< no ancestors of type UIElement
                 element = ancestorElement;
             }
 
-            // raise PreviewMouseWheelHorizontal event
-            var eventArgs = new MouseWheelHorizontalEventArgs(Mouse.PrimaryDevice, Environment.TickCount, delta)
-            {
-                RoutedEvent = HorizontalScrollWheel.PreviewMouseWheelHorizontalEvent
-            };
-
-            element.RaiseEvent(eventArgs);
-            if (eventArgs.Handled) return; //< preview handled the event
-
-            // raise MouseWheelHorizontal event
-            eventArgs.RoutedEvent = HorizontalScrollWheel.MouseWheelHorizontalEvent;
-            element.RaiseEvent(eventArgs);
+            // invoke the event(s)
+            InvokeEventWithPreview(
+                element,
+                HorizontalScroll.PreviewMouseWheelTiltEvent,
+                HorizontalScroll.MouseWheelTiltEvent,
+                new MouseWheelEventArgs(Mouse.PrimaryDevice, Environment.TickCount, delta));
         }
         #endregion (Private) HandleMouseWheelHorizontal
+
+        #region (Private) InvokeEventWithPreview
+        private static void InvokeEventWithPreview(IInputElement sender, RoutedEvent previewEvent, RoutedEvent mainEvent, RoutedEventArgs eventArgs)
+        {
+            eventArgs.RoutedEvent = previewEvent;
+            sender.RaiseEvent(eventArgs);
+            if (eventArgs.Handled) return;
+
+            eventArgs.RoutedEvent = mainEvent;
+            sender.RaiseEvent(eventArgs);
+        }
+        #endregion (Private) InvokeEventWithPreview
 
         #region (Private) GetParentWindowHandle
         private static IntPtr GetWindowHandle(Window window) => new WindowInteropHelper(window).Handle;
@@ -83,8 +87,8 @@ namespace HorizontalScroll
             => (PresentationSource.FromDependencyObject(d) as HwndSource)?.Handle;
         #endregion (Private) GetParentWindowHandle
 
-        #region (Private) EnableSupport
-        private static bool EnableSupport(IntPtr handle)
+        #region (Private) EnableTiltWheelSupport
+        private static bool EnableTiltWheelSupport(IntPtr handle)
         {
             if (_hookedHwnds.Contains(handle) || handle == IntPtr.Zero)
                 return true;
@@ -97,49 +101,49 @@ namespace HorizontalScroll
             source.AddHook(WndProcHook);
             return true;
         }
-        private static bool EnableSupport(IntPtr? handle) => handle.HasValue && EnableSupport(handle.Value);
+        private static bool EnableTiltWheelSupport(IntPtr? handle) => handle.HasValue && EnableTiltWheelSupport(handle.Value);
         #endregion (Private) EnableSupport
 
-        #region (Internal) EnableSupportFor
-        internal static bool EnableSupportFor(UIElement uiElement)
+        #region (Internal) EnableTiltWheelSupportFor
+        internal static bool EnableTiltWheelSupportFor(UIElement uiElement)
         {
             if (uiElement is Window window)
             {
                 if (window.IsLoaded)
-                    return EnableSupport(GetWindowHandle(window));
+                    return EnableTiltWheelSupport(GetWindowHandle(window));
                 else
                 { // enable support when loaded
-                    window.Loaded += (s, e) => EnableSupport(GetWindowHandle((Window)s));
+                    window.Loaded += (s, e) => EnableTiltWheelSupport(GetWindowHandle((Window)s));
                     return true;
                 }
             }
             else if (uiElement is Popup popup)
             {
                 // enable support when a new popup window opens
-                popup.Opened += (s, e) => EnableSupport(GetWindowHandle((Popup)s!));
+                popup.Opened += (s, e) => EnableTiltWheelSupport(GetWindowHandle((Popup)s!));
 
                 // enable support now if it's already open
-                return !popup.IsOpen || EnableSupport(GetWindowHandle(popup));
+                return !popup.IsOpen || EnableTiltWheelSupport(GetWindowHandle(popup));
             }
             else if (uiElement is ContextMenu contextMenu)
             {
                 // enable support when a new contextmenu window opens
-                contextMenu.Opened += (s, e) => EnableSupport(GetWindowHandle((ContextMenu)s));
+                contextMenu.Opened += (s, e) => EnableTiltWheelSupport(GetWindowHandle((ContextMenu)s));
 
                 // enable support now if it's already open
-                return !contextMenu.IsOpen || EnableSupport(GetWindowHandle(contextMenu));
+                return !contextMenu.IsOpen || EnableTiltWheelSupport(GetWindowHandle(contextMenu));
             }
             else if (GetWindowHandle(uiElement) is IntPtr hWnd)
             {
                 // add handler in case the parent window changes
-                PresentationSource.AddSourceChangedHandler(uiElement, new((s, e) => EnableSupport((e.NewSource as HwndSource)?.Handle)));
+                PresentationSource.AddSourceChangedHandler(uiElement, new((s, e) => EnableTiltWheelSupport((e.NewSource as HwndSource)?.Handle)));
 
                 // enable support now
-                return EnableSupport(hWnd);
+                return EnableTiltWheelSupport(hWnd);
             }
             else return false;
         }
-        #endregion (Private) EnableSupportFor
+        #endregion (Private) EnableTiltWheelSupportFor
 
         #endregion Methods
     }

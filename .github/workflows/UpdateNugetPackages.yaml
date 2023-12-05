@@ -33,9 +33,16 @@ jobs:
         run:    |
                 dotnet build -c Release
 
-                .\.github\workflows\scripts\SetProperty.ps1 -Path HorizontalScroll/HorizontalScroll.csproj                DocumentationFile="../output/`$`(MSBuildProjectName`).xml"
+                .\.github\workflows\scripts\SetProperty.ps1  -Path HorizontalScroll/HorizontalScroll.csproj  DocumentationFile="../output/`$`(MSBuildProjectName`).xml"
+
                 dotnet pack ./HorizontalScroll/HorizontalScroll.csproj --noLogo -c Release -o output --include-symbols
                 
+      - name:   Upload Artifact
+        uses:   actions/upload-artifact@v3
+        with:
+          name: nuget
+          path: output/*
+
       - name:   Authenticate with Github NuGet Package Registry
         run:    dotnet nuget add source --username radj307 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/radj307/index.json"
 

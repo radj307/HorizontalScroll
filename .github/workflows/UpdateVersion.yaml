@@ -28,7 +28,7 @@ jobs:
                 $tag_3_part = $Matches.MAJOR + '.' + $Matches.MINOR + '.' + $Matches.PATCH
                 $copyright = "Copyright © $((Get-Date).Year) by `$`(Authors`)"
                 
-                .\.github\workflows\scripts\SetProperty.ps1 -Path HorizontalScroll/HorizontalScroll.csproj                Version=$tag FileVersion=$tag_3_part Copyright=$copyright
+                .\.github\workflows\scripts\SetProperty.ps1  -Path Directory.Build.props  Version=$tag  FileVersion=$tag_3_part  Copyright=$copyright
 
       - name:   Push Changes
         run:    |

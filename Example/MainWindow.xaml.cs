@@ -15,9 +15,12 @@ namespace Example
             InitializeComponent();
         }
 
-        private void ScrollViewer_MouseWheelHorizontal(object sender, MouseWheelHorizontalEventArgs e)
+        private void ScrollViewer_Loaded(object sender, RoutedEventArgs e)
         {
-            // do stuff
+            // attach a new HorizontalScrollBehavior instance to the sender
+            Interaction
+                .GetBehaviors((ScrollViewer)sender)
+                .Add(new HorizontalScrollBehavior());
         }
     }
 }
