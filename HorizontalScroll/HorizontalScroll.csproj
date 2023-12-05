@@ -13,9 +13,6 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Description> Adds horizontal mouse wheel support to WPF</Description>
-    <Version>0.0.0</Version>
-    <FileVersion>0.0.0</FileVersion>
-    <Copyright>Copyright © 2023 by $(Authors)</Copyright>
     <RepositoryUrl>https://github.com/radj307/HorizontalScroll</RepositoryUrl>
     <PackageTags>horizontal;mouse;scroll;wheel;tilt;hook;wpf;support;ScrollViewer</PackageTags>
   </PropertyGroup>
