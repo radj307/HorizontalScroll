@@ -8,6 +8,9 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Description> Adds horizontal mouse wheel support to WPF</Description>
+    <Version>0.0.0</Version>
+    <FileVersion>0.0.0</FileVersion>
+    <Copyright>Copyright © 2023 by $(Authors)</Copyright>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Resources\horizontal-scroll.ico" />
