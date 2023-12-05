@@ -21,7 +21,7 @@ jobs:
           ref:          'main'
           fetch-depth:  0
 
-      - name:   Update .csproj Version Numbers
+      - name:   Update Version Numbers
         run:    | # When adding items to this list, make sure you also add them to UpdateNugetPackages.yaml so the documentation gets included too
                 $tag = $(git describe --tags --abbrev=0)
                 $tag -cmatch '(?<MAJOR>\d+?)\.(?<MINOR>\d+?)\.(?<PATCH>\d+?)(?<EXTRA>.*)' > $null
