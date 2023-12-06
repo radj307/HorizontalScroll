@@ -1,4 +1,4 @@
-![horizontalscroll-banner](https://github.com/radj307/HorizontalScroll/assets/1927798/f7acf6f9-535a-43d7-bf83-88725dd2cb0b)
+![horizontalscroll-banner-color](https://github.com/radj307/HorizontalScroll/assets/1927798/691ca8fd-3c30-4485-b7ef-77041974ea3b)
 
 Adds better horizontal scrolling support to WPF, and some useful behaviors for improving `ScrollViewer`.
 
