@@ -62,13 +62,26 @@ namespace HorizontalScroll
         /// </summary>
         public HorizontalScrollBehavior() { }
         /// <summary>
+        /// Creates a new <see cref="HorizontalScrollBehavior"/> instance with the default magnitude.
+        /// </summary>
+        /// <param name="enableShiftScroll"><see langword="false"/> disables the Shift+ScrollWheel input method.</param>
+        public HorizontalScrollBehavior(bool enableShiftScroll)
+            => IsShiftScrollEnabled = enableShiftScroll;
+        /// <summary>
         /// Creates a new <see cref="HorizontalScrollBehavior"/> instance with the specified <paramref name="magnitude"/>.
         /// </summary>
-        /// <param name="magnitude"></param>
+        /// <param name="magnitude">Value in the range 0.0-1.0 that determines how sensitive horizontal scrolling is. 0.0 is no sensitivity (disables scroll), 1.0 is max sensitivity.</param>
         public HorizontalScrollBehavior(double magnitude)
         {
             Magnitude = magnitude;
         }
+        /// <summary>
+        /// Creates a new <see cref="HorizontalScrollBehavior"/> instance with the specified <paramref name="magnitude"/>.
+        /// </summary>
+        /// <param name="magnitude">Value in the range 0.0-1.0 that determines how sensitive horizontal scrolling is. 0.0 is no sensitivity (disables scroll), 1.0 is max sensitivity.</param>
+        /// <param name="enableShiftScroll"><see langword="false"/> disables the Shift+ScrollWheel input method.</param>
+        public HorizontalScrollBehavior(double magnitude, bool enableShiftScroll) : this(magnitude)
+            => IsShiftScrollEnabled = enableShiftScroll;
         /// <summary>
         /// Creates a new <see cref="HorizontalScrollBehavior"/> instance with the specified <paramref name="magnitudeBinding"/>.
         /// </summary>
@@ -77,7 +90,22 @@ namespace HorizontalScroll
         {
             BindingOperations.SetBinding(AssociatedObject, MagnitudeProperty, magnitudeBinding);
         }
+        /// <summary>
+        /// Creates a new <see cref="HorizontalScrollBehavior"/> instance with the specified <paramref name="magnitudeBinding"/>.
+        /// </summary>
+        /// <param name="magnitudeBinding">A data binding to use for the Magnitude.</param>
+        /// <param name="enableShiftScroll"><see langword="false"/> disables the Shift+ScrollWheel input method.</param>
+        public HorizontalScrollBehavior(BindingBase magnitudeBinding, bool enableShiftScroll) : this(magnitudeBinding)
+            => IsShiftScrollEnabled = enableShiftScroll;
         #endregion Constructors
+
+        #region Properties
+        /// <summary>
+        /// Gets a value indicating whether holding Shift while scrolling up or down will scroll horizontally or vertically.
+        /// </summary>
+        /// <returns><see langword="true"/> when it scrolls horizontally; otherwise, <see langword="false"/> when it scrolls vertically.</returns>
+        public virtual bool IsShiftScrollEnabled { get; }
+        #endregion Properties
 
         #region MagnitudeProperty
         /// <summary>
@@ -87,7 +115,7 @@ namespace HorizontalScroll
             nameof(Magnitude),
             typeof(double),
             typeof(HorizontalScrollBehavior),
-            new PropertyMetadata(0.33, null, MagnitudePropertyCoerceValue));
+            new PropertyMetadata(0.33, null, OnMagnitudePropertyCoerceValue));
         /// <summary>
         /// Gets or sets the magnitude that controls how far each user input will move the scrollbar.
         /// </summary>
@@ -98,7 +126,7 @@ namespace HorizontalScroll
             get => (double)GetValue(MagnitudeProperty);
             set => SetValue(MagnitudeProperty, value);
         }
-        private static object MagnitudePropertyCoerceValue(DependencyObject d, object value)
+        private static object OnMagnitudePropertyCoerceValue(DependencyObject d, object value)
         {
             ArgumentNullException.ThrowIfNull(value);
 
@@ -120,16 +148,17 @@ namespace HorizontalScroll
         {
             base.OnAttached();
 
-            AssociatedObject.PreviewMouseWheel += AssociatedObject_PreviewMouseWheel;
-            HorizontalScroll.AddPreviewMouseWheelTiltHandler(AssociatedObject, AssociatedObject_PreviewMouseWheelHorizontal);
+            if (IsShiftScrollEnabled)
+                AssociatedObject.PreviewMouseWheel += AssociatedObject_PreviewMouseWheel; //< this has to be PreviewMouseWheel
+            HorizontalScroll.AddMouseWheelTiltHandler(AssociatedObject, AssociatedObject_PreviewMouseWheelTilt);
         }
         /// <inheritdoc/>
         protected override void OnDetaching()
         {
             base.OnDetaching();
 
-            AssociatedObject.PreviewMouseWheel -= AssociatedObject_PreviewMouseWheel;
-            HorizontalScroll.RemovePreviewMouseWheelTiltHandler(AssociatedObject, AssociatedObject_PreviewMouseWheelHorizontal);
+            AssociatedObject.PreviewMouseWheel -= AssociatedObject_PreviewMouseWheel; //< this has to be PreviewMouseWheel
+            HorizontalScroll.RemoveMouseWheelTiltHandler(AssociatedObject, AssociatedObject_PreviewMouseWheelTilt);
         }
         #endregion Behavior Method Overrides
 
@@ -142,7 +171,7 @@ namespace HorizontalScroll
                 e.Handled = true;
             }
         }
-        private void AssociatedObject_PreviewMouseWheelHorizontal(object sender, MouseWheelEventArgs e)
+        private void AssociatedObject_PreviewMouseWheelTilt(object sender, MouseWheelEventArgs e)
         { // handle horizontal mouse wheel events
             AssociatedObject.ScrollToHorizontalOffset(AssociatedObject.HorizontalOffset - e.Delta * Magnitude);
             e.Handled = true;

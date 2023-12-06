@@ -6,22 +6,15 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interop;
 
-namespace HorizontalScroll
+namespace HorizontalScroll.Internal
 {
     /// <summary>
     /// Provides a window message hook that adds support for horizontal scrolling with tiltable mouse wheels.
     /// </summary>
-    /// <remarks>
-    /// To retrieve the <see cref="HwndSourceHook"/>, use the <see cref="Hook"/> property.
-    /// </remarks>
-    public static class HorizontalScrollWindowHook
+    internal static class HorizontalScrollWindowHook
     {
         #region Properties
         private static readonly HashSet<IntPtr> _hookedHwnds = new();
-        /// <summary>
-        /// Gets the <see cref="HwndSourceHook"/> delegate that handles horizontal scroll messages.
-        /// </summary>
-        public static HwndSourceHook Hook { get; } = WndProcHook;
         #endregion Properties
 
         #region Methods
@@ -54,7 +47,7 @@ namespace HorizontalScroll
                 return; //< the mouse isn't over an element
 
             if (element is not UIElement)
-            { // try to resolve a UIElement from ancestors
+            { // get first UIElement ancestor
                 if (VisualTreeHelpers.FindAncestorWithType<UIElement>((DependencyObject)element) is not UIElement ancestorElement)
                     return; //< no ancestors of type UIElement
                 element = ancestorElement;

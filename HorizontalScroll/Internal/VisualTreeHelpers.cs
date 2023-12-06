@@ -2,7 +2,7 @@
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
-namespace HorizontalScroll
+namespace HorizontalScroll.Internal
 {
     static class VisualTreeHelpers
     {
