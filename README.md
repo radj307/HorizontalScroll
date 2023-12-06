@@ -96,6 +96,8 @@ private void ScrollViewer_Loaded(object sender, RoutedEventArgs e)
 
 ## Events
 
+**HorizontalScroll** adds two attached events for all subclasses of `UIElement`:
+
 | Event                                    | Handler Type             | EventArgs Type        |
 |------------------------------------------|--------------------------|-----------------------|
 | `HorizontalScroll.PreviewMouseWheelTilt` | `MouseWheelEventHandler` | `MouseWheelEventArgs` |
