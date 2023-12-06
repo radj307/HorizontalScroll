@@ -1,26 +1,36 @@
-![horizontalscroll-banner-color](https://github.com/radj307/HorizontalScroll/assets/1927798/691ca8fd-3c30-4485-b7ef-77041974ea3b)
+![horizontalscroll-banner-color-outline](https://github.com/radj307/HorizontalScroll/assets/1927798/d2560e6b-159c-4663-a466-c3701c4154a1)
 
-Adds better horizontal scrolling support to WPF, and some useful behaviors for improving `ScrollViewer`.
+NuGet package for **.NET 6+** that adds attached events for handling inputs from tiltable scroll wheels and provides an easy way to improve scrolling behavior in your application.
+It's lightweight, easy to use, and provides documentation through intellisense.
 
-| NuGet                | Version |
-|----------------------|---------|
-| **HorizontalScroll** | [![NuGet Status](http://img.shields.io/nuget/v/HorizontalScroll.svg?style=flat&logo=nuget&label=NuGet)](https://www.nuget.org/packages/HorizontalScroll) |
+*Requires the [**Microsoft.Xaml.Behaviors.Wpf**](https://www.nuget.org/packages/Microsoft.Xaml.Behaviors.Wpf/) nuget package.*
 
-Many newer high-end mice have scroll wheels that can be tilted left or right to scroll horizontally, but WPF doesn't provide any support for them. **HorizontalScroll** provides attached events to receive these messages on a per-control basis, just like the built-in `PreviewMouseWheel` & `MouseWheel` events.
+| NuGet                | Version                                                                                                                                                         |
+|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **HorizontalScroll** | [![NuGet Status](http://img.shields.io/nuget/v/HorizontalScroll.svg?style=flat-square&logo=nuget&label=NuGet)](https://www.nuget.org/packages/HorizontalScroll) |
+
+# Features
+
+- New events for handling tilt wheel inputs:
+  - `HorizontalScroll.PreviewMouseWheelTilt`
+  - `HorizontalScroll.MouseWheelTilt`
+- New behavior for `ScrollViewer` controls:
+  - Scrolls horizontally when tilting the mouse wheel
+  - `Shift+ScrollWheel` scrolls horizontally
+  - Scrolling sensitivity can be set or data-bound
 
 # Usage
 
-No `xmlns` declaration is required to use **HorizontalScroll** in XAML.
+> 1. [`HorizontalScrollBehavior`](#behaviors)
+>    1. [Enabling Application-Wide](#enabling-application-wide-support)
+> 2. [Events](#events)
 
-> **Table of Contents**
-> 
-> 1. [Using `HorizontalScrollBehavior`](#behaviors)
->    1. [Application-Wide Support](#enabling-application-wide-support)
-> 3. [Events](#events)
+***Note:** No `xmlns` declarations are required to use **HorizontalScroll** in XAML.*
 
 ## Behaviors
 
-`HorizontalScrollBehavior` can be attached to any `ScrollViewer` control to add support for horizontal scrolling by tilting the scroll wheel, or by holding the `Shift` key while scrolling up/down.  
+`HorizontalScrollBehavior` can be attached to any `ScrollViewer` control, and adds support for scrolling horizontally by tilting the mouse wheel or by holding the `Shift` key while scrolling up or down.  
+
 You can attach it to a specific `ScrollViewer` entirely in XAML:  
 ```xaml
 <ScrollViewer xmlns:i="http://schemas.microsoft.com/xaml/behaviors">
@@ -31,9 +41,12 @@ You can attach it to a specific `ScrollViewer` entirely in XAML:
              range is 0.0 - 1.0, where 0 is no sensitivity (disabled) and 1 is maximum sensitivity. The default is 0.33.
             -->
     </i:Interaction.Behaviors>
+
+    <!-- ... -->
 </ScrollViewer>
 ```
-Scrollable WPF controls like `ListBox`, `ListView`, `TreeView`, `DataGrid`, etc. are implemented using a `ScrollViewer`, so you can use `HorizontalScrollBehavior` to add support for them as well. While you *could* use a `ControlTemplate`, it's much more maintainable - not to mention faster and easier - to attach it in the code-behind with a style and an `EventSetter` instead:  
+Scrollable WPF controls like `ListBox`, `ListView`, `TreeView`, `DataGrid`, etc. are implemented using a `ScrollViewer`, so you can use `HorizontalScrollBehavior` to add support for them as well. 
+While you *could* use a `ControlTemplate` to accomplish that, a better way is to use an `EventSetter` to attach it in the `Loaded` event:  
 ```xaml
 <ListBox>
     <ListBox.Resources>
@@ -80,7 +93,6 @@ private void ScrollViewer_Loaded(object sender, RoutedEventArgs e)
         .Add(new HorizontalScrollBehavior(/* 0.5 | new Binding() | new MultiBinding() */));
 }
 ```
-
 
 ## Events
 
