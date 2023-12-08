@@ -104,7 +104,7 @@ namespace HorizontalScroll
         /// Gets a value indicating whether holding Shift while scrolling up or down will scroll horizontally or vertically.
         /// </summary>
         /// <returns><see langword="true"/> when it scrolls horizontally; otherwise, <see langword="false"/> when it scrolls vertically.</returns>
-        public virtual bool IsShiftScrollEnabled { get; }
+        public virtual bool IsShiftScrollEnabled { get; } = true;
         #endregion Properties
 
         #region MagnitudeProperty
