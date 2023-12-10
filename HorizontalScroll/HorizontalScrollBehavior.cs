@@ -88,7 +88,7 @@ namespace HorizontalScroll
         /// <param name="magnitudeBinding">A data binding to use for the Magnitude.</param>
         public HorizontalScrollBehavior(BindingBase magnitudeBinding)
         {
-            BindingOperations.SetBinding(AssociatedObject, MagnitudeProperty, magnitudeBinding);
+            BindingOperations.SetBinding(this, MagnitudeProperty, magnitudeBinding);
         }
         /// <summary>
         /// Creates a new <see cref="HorizontalScrollBehavior"/> instance with the specified <paramref name="magnitudeBinding"/>.
