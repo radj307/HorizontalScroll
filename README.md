@@ -86,7 +86,7 @@ It works by searching the descendants and/or ancestors of the control for a `Scr
 
 You can fine-tune the search behavior for finding the `ScrollViewer` with the `SearchMode` & `SearchDepth` properties.  
 The search mode determines whether ancestors and/or descendants are searched, and in what order.  
-The search depth determines how many layers of ancestor/descendant controls will be searched for a `ScrollViewer`.
+The search depth determines how many layers of ancestor/descendant controls can be searched.
 
 
 ## Events
