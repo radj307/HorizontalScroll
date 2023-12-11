@@ -11,17 +11,18 @@ It's lightweight, easy to use, and provides documentation through intellisense.
 
 # Features
 
-- New events for handling tilt wheel inputs:
-  - `HorizontalScroll.PreviewMouseWheelTilt`
-  - `HorizontalScroll.MouseWheelTilt`
-- New behavior for `ScrollViewer` controls:
-  - Scrolls horizontally when tilting the mouse wheel
-  - `Shift+ScrollWheel` scrolls horizontally
-  - Scrolling sensitivity can be set or data-bound
+- Adds attached events for receiving horizontal mouse wheel input:  
+  `HorizontalScroll.PreviewMouseWheelTilt`  
+  `HorizontalScroll.MouseWheelTilt`
+- Adds behaviors to enable horizontal scrolling for all WPF controls that use `ScrollViewer`.  
+  - Adjustable sensitivity
+  - Also adds *(toggleable)* support for Shift+Scroll
 
 # Usage
 
-> 1. [`HorizontalScrollBehavior`](#behaviors)
+> 1. [Behaviors](#behaviors)
+>    1. [`HorizontalScrollBehavior`](#horizontalscrollbehavior)
+>    2. [`AttachHorizontalScrollBehavior`](#attachhorizontalscrollbehavior)
 > 2. [Events](#events)
 
 ***Note:** No `xmlns` declarations are required to use **HorizontalScroll** in XAML.*
