@@ -1,11 +1,8 @@
 name: Upload Nuget Packages
 
 on:
-  workflow_run:
-    workflows:
-      - 'Update Version'
-    types:
-      - 'completed'
+  repository_dispatch:
+    types: [ update-package ]
 
 defaults:
   run:
@@ -23,7 +20,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref:  ${{ github.ref }}
+          ref:  ${{ github.event.client_payload.tag }}
+          fetch-depth: ${{ github.event.client_payload.fetch-depth }}
 
       - uses: actions/setup-dotnet@v3.2.0
         with:

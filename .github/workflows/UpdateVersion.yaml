@@ -22,6 +22,7 @@ jobs:
           fetch-depth:  0
 
       - name:   Update Version Numbers
+        id:     setversion
         run:    | # When adding items to this list, make sure you also add them to UpdateNugetPackages.yaml so the documentation gets included too
                 $tag = $(git describe --tags --abbrev=0)
                 $tag -cmatch '(?<MAJOR>\d+?)\.(?<MINOR>\d+?)\.(?<PATCH>\d+?)(?<EXTRA>.*)' > $null
@@ -30,12 +31,27 @@ jobs:
                 
                 .\.github\workflows\scripts\SetProperty.ps1  -Path Directory.Build.props  Version=$tag  FileVersion=$tag_3_part  Copyright=$copyright
 
+                echo "tag=$tag" >> $env:GITHUB_OUTPUT
+
       - name:   Push Changes
+        id:     push
         run:    |
                 git config user.name github-actions
                 git config user.email github-actions@github.com
                 git add -A
                 git commit -m "Update .csproj Version Numbers"
                 git push origin
+
+                echo "fetch-depth=$((git show -s --format=%H "$(git rev-list -n 1 $(git tag | Select -Last 1 -Skip 1))..HEAD").Length)"
+
+      - name:   Dispatch Update Package
+        uses:   peter-evans/repository-dispatch@v2.1.2
+        with:
+          event-type: update-package
+          client-payload: |-
+            {
+              "tag": "${{ steps.setversion.outputs.tag }}",
+              "fetch-depth": "${{ steps.push.outputs.fetch-depth }}"
+            }
         
 # HEAD:github-actions
