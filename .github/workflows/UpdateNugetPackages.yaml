@@ -40,6 +40,9 @@ jobs:
                 $OFS="`n" #< Set variable expansion delim to newline
                 .\.github\workflows\scripts\SetProperty.ps1  -Path HScroll/HScroll.csproj  "PackageReleaseNotes=$message"
 
+                Write-Host "Package Release Notes:"
+                Write-Host "$message"
+
                 dotnet pack ./HScroll/HScroll.csproj --noLogo -c Release -o output --include-symbols
                 
       - name:   Upload Artifact
