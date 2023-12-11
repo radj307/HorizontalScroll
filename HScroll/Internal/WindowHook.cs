@@ -6,12 +6,12 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interop;
 
-namespace HorizontalScroll.Internal
+namespace HScroll.Internal
 {
     /// <summary>
     /// Provides a window message hook that adds support for horizontal scrolling with tiltable mouse wheels.
     /// </summary>
-    internal static class HorizontalScrollWindowHook
+    static class HorizontalScrollWindowHook
     {
         #region Properties
         private static readonly HashSet<IntPtr> _hookedHwnds = new();
@@ -36,7 +36,7 @@ namespace HorizontalScroll.Internal
         #region (Private) GetHorizontalDelta
         private static int GetHorizontalDelta(IntPtr value)
         {
-            return unchecked(-(short)((uint)(IntPtr.Size == 8 ? (int)value.ToInt64() : value.ToInt32()) >> 16));
+            return unchecked((short)((uint)(IntPtr.Size == 8 ? (int)value.ToInt64() : value.ToInt32()) >> 16));
         }
         #endregion (Private) GetHorizontalDelta
 

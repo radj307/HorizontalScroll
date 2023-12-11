@@ -1,9 +1,9 @@
-﻿using HorizontalScroll.Internal;
+﻿using HScroll.Internal;
 using System;
 using System.Windows;
 using System.Windows.Input;
 
-namespace HorizontalScroll
+namespace HScroll
 {
     /// <summary>
     /// Defines attached <see cref="RoutedEvent"/>s for receiving horizontal scroll inputs.

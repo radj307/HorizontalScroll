@@ -1,4 +1,4 @@
-﻿using HorizontalScroll;
+﻿using HScroll;
 using Microsoft.Xaml.Behaviors;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,10 +17,19 @@ namespace Example
 
         private void ScrollViewer_Loaded(object sender, RoutedEventArgs e)
         {
-            // attach a new HorizontalScrollBehavior instance to the sender
+            // add HorizontalScrollBehavior directly to the ScrollViewer
             Interaction
                 .GetBehaviors((ScrollViewer)sender)
                 .Add(new HorizontalScrollBehavior());
+        }
+        private void ListView_Loaded(object sender, RoutedEventArgs e)
+        {
+            var listView = (ListView)sender;
+
+            // add AttachHorizontalScrollBehavior
+            Interaction
+                .GetBehaviors((ListView)sender)
+                .Add(new AttachHorizontalScrollBehavior());
         }
     }
 }

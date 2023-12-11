@@ -22,86 +22,86 @@ It's lightweight, easy to use, and provides documentation through intellisense.
 # Usage
 
 > 1. [`HorizontalScrollBehavior`](#behaviors)
->    1. [Enabling Application-Wide](#enabling-application-wide-support)
 > 2. [Events](#events)
 
 ***Note:** No `xmlns` declarations are required to use **HorizontalScroll** in XAML.*
 
 ## Behaviors
 
-`HorizontalScrollBehavior` can be attached to any `ScrollViewer` control, and adds support for scrolling horizontally by tilting the mouse wheel or by holding the `Shift` key while scrolling up or down.  
+### HorizontalScrollBehavior
 
-You can attach it to a specific `ScrollViewer` entirely in XAML:  
+`HorizontalScrollBehavior` is a `ScrollViewer` behavior that adds support for scrolling horizontally by tilting the mouse wheel or by holding the `Shift` key while scrolling up or down.  
+It can be attached to a specific ScrollViewer in the usual way through XAML, or to all ScrollViewers in a scope *(including the ones inside of other controls, like a `ListBox` or `DataGrid`)* with a target-typed style and an `EventSetter`.
+
+Attaching to a specific `ScrollViewer`:  
 ```xaml
 <ScrollViewer xmlns:i="http://schemas.microsoft.com/xaml/behaviors">
     <i:Interaction.Behaviors>
-        <HorizontalScrollBehavior Magnitude="0.5" />
-        <!--                       ▲▲▲▲▲▲▲
-            Magnitude is a DependencyProperty of type double that determines how sensitive horizontal scrolling is. The
-             range is 0.0 - 1.0, where 0 is no sensitivity (disabled) and 1 is maximum sensitivity. The default is 0.33.
-            -->
+        <HorizontalScrollBehavior />
     </i:Interaction.Behaviors>
-
-    <!-- ... -->
 </ScrollViewer>
 ```
-Scrollable WPF controls like `ListBox`, `ListView`, `TreeView`, `DataGrid`, etc. are implemented using a `ScrollViewer`, so you can use `HorizontalScrollBehavior` to add support for them as well. 
-While you *could* use a `ControlTemplate` to accomplish that, a better way is to use an `EventSetter` to attach it in the `Loaded` event:  
+
+To attach it to all of the `ScrollViewer` controls in a scope, create a target-typed style resource and an `EventSetter` for the `Loaded` event:  
 ```xaml
-<ListBox>
-    <ListBox.Resources>
-        <Style TargetType="{x:Type ScrollViewer}">
-            <EventSetter Event="Loaded" Handler="ScrollViewer_Loaded" />
-        </Style>
-    </ListBox.Resources>
-</ListBox>
+<Application.Resources>
+    <Style x:Key="EnableHorizontalScrollStyle" TargetType="{x:Type ScrollViewer}">
+        <EventSetter Event="Loaded" Handler="ScrollViewer_Loaded" />
+    </Style>
+</Application.Resources>
 ```
+And attach the behavior in the code-behind:  
 ```csharp
 private void ScrollViewer_Loaded(object sender, RoutedEventArgs e)
 {
     // Tip: You can set the Magnitude property (to a value or binding) in the HorizontalScrollBehavior constructor.
     Interaction
         .GetBehaviors((ScrollViewer)sender)
-        .Add(new HorizontalScrollBehavior( /* magnitude: 0.5 | magnitudeBinding: new Binding() */ ));
+        .Add(new HScroll.HorizontalScrollBehavior( /* magnitude: 0.5 | magnitudeBinding: new Binding() */ ));
 }
 ```
 
-### Enabling Application-Wide Support
+You can change the scrolling sensitivity with the **Magnitude** DependencyProperty, and/or disable the Shift+ScrollWheel input binding with the **EnableShiftScroll** DependencyProperty.
 
-The previous example showed how to attach `HorizontalScrollBehavior` to a `ListBox`'s internal `ScrollViewer`, but that approach can also be used for an entire window or application. The exact same code as the previous example will work just fine, but if you want to make your own `ScrollViewer` style later on you may want one with a key so you can inherit from it:  
+
+### AttachHorizontalScrollBehavior
+
+In situations where you want to apply a `HorizontalScrollBehavior` to a specific control's internal `ScrollViewer` without affecting list items, 
+or in cases where the `ScrollViewer` isn't available when the behavior would normally be attached *(such as when setting `ListView.View`)*,
+you can use `AttachHorizontalScrollBehavior` to attach it on the attached control's `Loaded` event.
+It works by searching the descendants and/or ancestors of the control for a `ScrollViewer`, and attaches a `HorizontalScrollBehavior` to it.
+
 ```xaml
-<ListBox>
-    <ListBox.Resources>
-
-        <!--  You can inherit from this style later on to avoid multiple implementations:  -->
-        <Style x:Key="AttachScrollBehaviorStyle" TargetType="{x:Type ScrollViewer}">
-            <EventSetter Event="Loaded" Handler="ScrollViewer_Loaded" />
-        </Style>
-
-        <!--  This style inherits from the previous one, but it's the default for all ScrollViewers:  -->
-        <Style TargetType="{x:Type ScrollViewer}" BasedOn="{StaticResource AttachScrollBehaviorStyle}" />
-
-    </ListBox.Resources>
-</ListBox>
+<ListView xmlns:i="http://schemas.microsoft.com/xaml/behaviors">
+    <i:Interaction.Behaviors>
+        <AttachHorizontalScrollBehavior />
+    </i:Interaction.Behaviors>
+    <ListView.View>
+        <GridView>
+            <GridViewColumn />
+        </GridView>
+    </ListView.View>
+</ListView>
 ```
-```csharp
-private void ScrollViewer_Loaded(object sender, RoutedEventArgs e)
-{
-    // Tip: You can set the Magnitude property in the HorizontalScrollBehavior constructor.
-    Interaction
-        .GetBehaviors((ScrollViewer)sender)
-        .Add(new HorizontalScrollBehavior(/* 0.5 | new Binding() | new MultiBinding() */));
-}
-```
+
+You can fine-tune the search behavior for finding the `ScrollViewer` with the `SearchMode` & `SearchDepth` properties.  
+The search mode determines whether ancestors and/or descendants are searched, and in what order.  
+The search depth determines how many layers of ancestor/descendant controls will be searched for a `ScrollViewer`.
+
 
 ## Events
 
-**HorizontalScroll** adds two attached events for all subclasses of `UIElement`:
+**HorizontalScroll** adds two attached events for all subclasses of `UIElement`:  
 
 | Event                                    | Handler Type             | EventArgs Type        |
 |------------------------------------------|--------------------------|-----------------------|
 | `HorizontalScroll.PreviewMouseWheelTilt` | `MouseWheelEventHandler` | `MouseWheelEventArgs` |
 | `HorizontalScroll.MouseWheelTilt`        | `MouseWheelEventHandler` | `MouseWheelEventArgs` |
+
+You can get the horizontal delta value from `MouseWheelEventArgs.Delta`.  
+A positive delta means the wheel was tilted right, negative values mean it was tilted left.  
+
+Usually the delta value is `-120` *(left)* or `120` *(right)*, but this should not be relied upon as MSDN says other values are allowed in order to perform smaller scrolling increments.
 
 ### Example
 

@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HorizontalScroll\HorizontalScroll.csproj" />
+    <ProjectReference Include="..\HScroll\HScroll.csproj" />
   </ItemGroup>
 
 </Project>

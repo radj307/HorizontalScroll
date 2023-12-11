@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="Scroll Example"
+    Title="HScroll Example"
     Width="300"
     Height="300"
     mc:Ignorable="d">
@@ -19,11 +19,33 @@
             <EventSetter Event="Loaded" Handler="ScrollViewer_Loaded" />
         </Style>
 
+        <Style TargetType="{x:Type ListView}">
+            <EventSetter Event="Loaded" Handler="ListView_Loaded" />
+        </Style>
+
     </Window.Resources>
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
         <!--  ListBox contains a ScrollViewer  -->
-        <ListBox Grid.Row="1">
+        <ListBox>
+            <TextBlock Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
+            <TextBlock Text="Amet nisl purus in mollis nunc sed id semper." />
+            <TextBox Text="Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." />
+            <TextBox Text="Ultricies integer quis auctor elit sed vulputate. Pharetra sit amet aliquam id." />
+            <TextBox Text="Sed elementum tempus egestas sed. Posuere sollicitudin aliquam ultrices sagittis." />
+            <TextBlock Text="Vel facilisis volutpat est velit." />
+            <TextBlock Text="Interdum posuere lorem ipsum dolor sit amet. Lacus sed turpis tincidunt id aliquet risus feugiat in ante." />
+            <TextBlock Text="Pellentesque elit ullamcorper dignissim cras." />
+            <TextBlock Text="Suspendisse in est ante in nibh." />
+            <TextBlock Text="Tempus iaculis urna id volutpat lacus laoreet non curabitur gravida." />
+            <TextBlock Text="Id ornare arcu odio ut sem nulla pharetra." />
+            <TextBlock Text="Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper." />
+            <TextBlock Text="Nulla posuere sollicitudin aliquam ultrices sagittis orci a scelerisque purus." />
             <TextBlock Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
             <TextBlock Text="Amet nisl purus in mollis nunc sed id semper." />
             <TextBlock Text="Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." />
@@ -38,5 +60,17 @@
             <TextBlock Text="Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper." />
             <TextBlock Text="Nulla posuere sollicitudin aliquam ultrices sagittis orci a scelerisque purus." />
         </ListBox>
+
+        <ListView Grid.Row="1" ToolTip="This ListView uses a View, which would normally prevent HorizontalScrollBehavior from working. However, it uses AttachHorizontalScrollBehavior to fix that.">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Some Column" />
+                </GridView>
+            </ListView.View>
+            <ListView.Items>
+                <ListViewItem Content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
+                <ListViewItem Content="Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." />
+            </ListView.Items>
+        </ListView>
     </Grid>
 </Window>
