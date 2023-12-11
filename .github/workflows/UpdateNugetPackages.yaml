@@ -33,9 +33,9 @@ jobs:
         run:    |
                 dotnet build -c Release
 
-                .\.github\workflows\scripts\SetProperty.ps1  -Path HorizontalScroll/HorizontalScroll.csproj  DocumentationFile="../output/`$`(MSBuildProjectName`).xml"
+                .\.github\workflows\scripts\SetProperty.ps1  -Path HScroll/HScroll.csproj  DocumentationFile="../output/`$`(MSBuildProjectName`).xml"
 
-                dotnet pack ./HorizontalScroll/HorizontalScroll.csproj --noLogo -c Release -o output --include-symbols
+                dotnet pack ./HScroll/HScroll.csproj --noLogo -c Release -o output --include-symbols
                 
       - name:   Upload Artifact
         uses:   actions/upload-artifact@v3
