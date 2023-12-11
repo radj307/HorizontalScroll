@@ -34,13 +34,14 @@ jobs:
                 dotnet build -c Release
 
                 # Set DocumentationFile
-                .\.github\workflows\scripts\SetProperty.ps1  -Path HScroll/HScroll.csproj  DocumentationFile="../output/`$`(MSBuildProjectName`).xml"
+                .\.github\workflows\scripts\SetProperty.ps1  -Path HScroll/HScroll.csproj  "DocumentationFile=../output/`$`(MSBuildProjectName`).xml"
 
                 # Set PackageReleaseNotes
                 $a = $(git tag --sort=-version:refname | Select -first 2)
                 [array]::reverse($a)
-                $message = $(git show -s --format="[%h]%n  %B" $([System.String]::Join("..", $a)) | ? { $_.trim() -ne "" } | % { $_ -replace "^[-+]\s*","  - " })
-                .\.github\workflows\scripts\SetProperty.ps1  -Path HScroll/HScroll.csproj  PackageReleaseNotes="$message"
+                $message = $( git show -s --format="[%h] %B" $([System.String]::Join("..", $a)) | ? { $_.trim() -ne "" -and -not $_.contains("Merge branch") } | % { $_ -replace "^[-+]\s*","  - " } )
+                $OFS="`n" #< Set variable expansion delim to newline
+                .\.github\workflows\scripts\SetProperty.ps1  -Path HScroll/HScroll.csproj  "PackageReleaseNotes=$message"
 
                 dotnet pack ./HScroll/HScroll.csproj --noLogo -c Release -o output --include-symbols
                 
