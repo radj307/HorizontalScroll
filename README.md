@@ -1,4 +1,4 @@
-![horizontalscroll-banner-color-outline](https://github.com/radj307/HorizontalScroll/assets/1927798/d2560e6b-159c-4663-a466-c3701c4154a1)
+![horizontalscroll-banner-color-outline](https://i.imgur.com/TgRLYjC.png)
 
 NuGet package for **.NET 6+** that adds attached events for handling inputs from tiltable scroll wheels and provides an easy way to improve scrolling behavior in your application.
 It's lightweight, easy to use, and provides documentation through intellisense.
