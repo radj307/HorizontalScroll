@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Description>Adds support for scrolling horizontally with the mouse to WPF.</Description>
+    <Description>Adds horizontal mouse wheel events &amp; improved horizontal scrolling behavior to WPF.</Description>
     <PackageIcon>hscroll-xamlbehaviors-icon.png</PackageIcon>
     <NeutralLanguage>en</NeutralLanguage>
     <IncludeSymbols>True</IncludeSymbols>
@@ -14,6 +14,8 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/radj307/HorizontalScroll</RepositoryUrl>
     <PackageTags>horizontal;mouse;scroll;wheel;tilt;hook;wpf;support;ScrollViewer</PackageTags>
+    <PackageId>HorizontalScroll</PackageId>
+    <PackageProjectUrl>https://github.com/radj307/HorizontalScroll</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>

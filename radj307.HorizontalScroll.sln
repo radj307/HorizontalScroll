@@ -18,6 +18,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example", "Example\Example.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HScroll", "HScroll\HScroll.csproj", "{3BCA7648-4581-4A53-9931-810AB26AEEB6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{E1DB876A-CE3B-4751-AC97-E793EF0558B6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{CDC3ECF3-BFDF-4B7D-B904-F41F6A68B03C} = {7434FF2B-261A-41A4-AC91-60F91F06E10C}
+		{E1DB876A-CE3B-4751-AC97-E793EF0558B6} = {CDC3ECF3-BFDF-4B7D-B904-F41F6A68B03C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C36BFDA1-A031-4506-9612-5A7AEDE48F27}
