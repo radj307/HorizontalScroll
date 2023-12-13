@@ -13,9 +13,9 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/radj307/HorizontalScroll</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/radj307/HorizontalScroll</PackageProjectUrl>
     <PackageTags>horizontal;mouse;scroll;wheel;tilt;hook;wpf;support;ScrollViewer</PackageTags>
     <PackageId>HorizontalScroll</PackageId>
-    <PackageProjectUrl>https://github.com/radj307/HorizontalScroll</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
